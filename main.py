@@ -29,7 +29,7 @@ class Phone(Field):
 
     @property
     def value(self):
-        return self.__value
+        return self._value
 
     def __str__(self):
         return str(self.value)
@@ -40,23 +40,23 @@ class Phone(Field):
             raise ValueError("Phone number should be 10 digits long.")
         if not new_value.isdigit():
             raise ValueError("Phone number should only include digits.")
-        self.__value = new_value
+        self._value = new_value
 
 
 class Birthday(Field):
     def __init__(self, value):
-        self.__value = None
+        self._value = None
         self.birthday = value
 
     @property
     def birthday(self):
-        return self.__value
+        return self._value
 
     @birthday.setter
     def birthday(self, new_value) -> datetime:
         if new_value:
             try:
-                self.__value = date.fromisoformat(new_value)
+                self._value = date.fromisoformat(new_value)
             except ValueError:
                 raise ValueError("Invalid birthday format. Use YYYY-MM-DD.")
 
@@ -295,3 +295,4 @@ if __name__ == "__main__":
         contacts.save()
         print('\n')
         bye()
+
