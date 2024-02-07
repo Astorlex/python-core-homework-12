@@ -146,7 +146,6 @@ class AddressBook(UserDict):
 
 contacts = AddressBook.from_storage()
 
-
 def input_error(func):
     def wrapper(*args, **kwargs):
         try:
@@ -159,7 +158,7 @@ def input_error(func):
             return "Name is missing. Please provide a name."
         except InvalidBirthdayFormatError:
             return "Invalid birthday format. Use YYYY-MM-DD."
-        except Exception:
+        except Exception as e:
             return "Invalid command. Please try again."
 
     return wrapper
@@ -249,6 +248,7 @@ def show_all():
 
 
 def bye():
+    contacts.save()
     print("Good bye!")
 
 
@@ -282,17 +282,19 @@ def main():
                 print('\n'.join(all_contacts))
             else:
                 print(all_contacts)
-
-        elif user_input_lower in ["good bye", "close", "exit"]:
+                
+        elif user_input_lower in ["bye", "good bye", "close", "exit"]:
             bye()
             break
+        elif not user_input_lower.strip():
+            ...
+        else:
+            print("Invalid command. Please try again.")
 
 
 if __name__ == "__main__":
     try:
         main()
     except (KeyboardInterrupt, SystemExit, EOFError):
-        contacts.save()
         print('\n')
         bye()
-
